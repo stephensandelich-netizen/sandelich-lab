@@ -1,0 +1,42 @@
+---
+import Layout from "../layouts/Layout.astro";
+import siteConfig from "../side.config";
+---
+
+<Layout title="Contact" description="Get in touch with the Sandelich Lab." schemaType="ContactPage">
+  <div class="page-stack">
+    <header class="page-header">
+      <p class="page-kicker">Get in touch</p>
+      <h1 class="page-title">Contact</h1>
+      <p class="page-description">
+        Questions, ideas, or just want to say hello — we're here to help, and we respond within 48 hours.
+      </p>
+    </header>
+
+    <div class="grid gap-4 md:grid-cols-2">
+      <div class="surface-card space-y-2">
+        <p class="section-kicker">Email</p>
+        <a href="mailto:Sandelich.MD@gmail.com" class="entry-title no-underline hover:text-accent-700 dark:hover:text-accent-300">
+          Sandelich.MD@gmail.com
+        </a>
+      </div>
+      <div class="surface-card space-y-2">
+        <p class="section-kicker">Phone</p>
+        <a href="tel:717-461-3863" class="entry-title no-underline hover:text-accent-700 dark:hover:text-accent-300">
+          717-461-3863
+        </a>
+      </div>
+      <div class="surface-card space-y-2 md:col-span-2">
+        <p class="section-kicker">Elsewhere</p>
+        <div class="flex flex-wrap gap-2 pt-1">
+          {siteConfig.socialLinks.map((link) => (
+            <a href={link.href} target="_blank" rel="noreferrer" class="action-link glass-control min-h-11 px-3.5">
+              <span class={link.icon} aria-hidden="true"></span>
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

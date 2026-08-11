@@ -1,0 +1,75 @@
+---
+import ContentPage from "../components/ContentPage.astro";
+
+const sections = [
+  {
+    id: "how-we-work",
+    kicker: "Our approach",
+    title: "We come to you",
+    items: [
+      {
+        title: "Listen first",
+        description:
+          "We connect with each community to understand its audience and goals before building anything.",
+      },
+      {
+        title: "Build programming around real conversations",
+        description:
+          "Education, awareness, and honest conversation, brought directly to the places young people and families already gather — at no cost.",
+      },
+    ],
+  },
+  {
+    id: "schools",
+    kicker: "For schools & youth programs",
+    title: "School & Youth Programming",
+    items: [
+      { title: "Age-appropriate substance use curricula", description: "Curriculum built for the developmental stage of the audience, not a one-size-fits-all talk." },
+      { title: "Set & Setting", description: "Mindset and environment education for teens navigating substance use decisions." },
+      { title: "Ignite & Engage", description: "Peer-led program support, evaluated in a published mixed-methods study." },
+      { title: "Q&A sessions", description: "Direct conversations with physicians and medical students." },
+      { title: "Parent & caregiver workshops", description: "Sessions built for the adults supporting these teens at home." },
+    ],
+  },
+  {
+    id: "community",
+    kicker: "For community organizations",
+    title: "Community Outreach",
+    items: [
+      { title: "Faith community presentations", description: "Church and other faith-based community sessions." },
+      { title: "Farmers market & community events", description: "Informational tables and awareness booths at local gatherings." },
+      { title: "Community forums", description: "Facilitated conversations on substance use and harm reduction." },
+      { title: "Resource distribution", description: "Naloxone and harm reduction supplies distributed at every event." },
+    ],
+  },
+  {
+    id: "recent-events",
+    kicker: "Recent work",
+    title: "Recent Outreach Events",
+    items: [
+      { title: "Naloxone Distribution Table", subtitle: "PAS 2026 Annual Meeting, Boston, MA", date: "4/2026", description: "Co-organized a naloxone distribution table; distributed 1,800 doses to attendees." },
+      { title: "AED Training Sessions", subtitle: "First Church of the Brethren, Harrisburg, PA", date: "1/2026", description: "Organized and led CPR/AED training for community laypersons across multiple sessions." },
+      { title: "Harm Reduction Outreach Table", subtitle: "Local Farmers' Market, Hershey, PA", date: "6/2025–8/2025", description: "Six weekly sessions, engaging roughly 30 community members per event." },
+      { title: "High School Substance Use Outreach", subtitle: "Central Pennsylvania high schools", date: "10/2024–Present", description: "Ongoing program led with medical students and residents on substance use risks and harm reduction." },
+    ],
+  },
+  {
+    id: "volunteer",
+    kicker: "Join us",
+    title: "Volunteer With Us",
+    items: [
+      {
+        title: "Medical & nursing students, public health trainees, and community volunteers",
+        description: "We're always looking for people to help staff events and build programming. Reach out through the Contact page.",
+      },
+    ],
+  },
+];
+---
+
+<ContentPage
+  kicker="Community & education"
+  pageTitle="Outreach"
+  pageDescription="We bring education, awareness, and honest conversation directly to the places where young people and families already gather."
+  sections={sections}
+/>

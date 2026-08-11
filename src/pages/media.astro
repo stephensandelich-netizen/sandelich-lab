@@ -1,0 +1,57 @@
+---
+import ContentPage from "../components/ContentPage.astro";
+
+const sections = [
+  {
+    id: "articles",
+    kicker: "Writing & commentary",
+    title: "Articles & Commentary",
+    items: [
+      { title: "3 bedside tools for adolescent overdose prevention", subtitle: "KevinMD.com", date: "7/24/2026", link: "" },
+      { title: "Substance use screening is vital for adolescent health", subtitle: "KevinMD.com", date: "5/16/2026", link: "" },
+      { title: "The true crime community is radicalizing kids online", subtitle: "KevinMD.com (with D. Ingram, M. Turner)", date: "4/26/2026", link: "" },
+      { title: "Peer-led storytelling in adolescent substance use prevention", subtitle: "KevinMD.com (with A. Alvarado)", date: "4/8/2026", link: "" },
+      { title: "We Have a Substance Use Prevention Problem — Having Kids Hear From People With Lived Experience Can Help Move the Needle", subtitle: "MedPage Today, Perspectives/Second Opinions", date: "3/28/2026", link: "" },
+      { title: "Closing the Treatment Gap: Emergency Department Strategies for Youth With Opioid Use Disorder", subtitle: "SAEM Pulse (with C. Buresh)", date: "12/2025", link: "" },
+    ],
+  },
+  {
+    id: "press",
+    kicker: "Press coverage",
+    title: "Press Interviews",
+    items: [
+      { title: "Cannabis Poisonings Are Rising, Mostly Among Kids", subtitle: "The New York Times — Danielle Ivory", date: "8/10/2025", link: "" },
+      { title: "Experts tell firsthand stories of children harmed by addicted parents", subtitle: "TribLive — Deb Erdley", date: "12/17/2023", link: "" },
+    ],
+  },
+  {
+    id: "podcasts",
+    kicker: "Podcasts",
+    title: "Podcast Appearances",
+    items: [
+      { title: "Addressing Adolescent Substance Use Through School Outreach", subtitle: "Penn State Evidence-to-Impact Collaborative, Episode 27", date: "2/16/2026", link: "" },
+      { title: "Neonatal Resuscitation Tips", subtitle: "ACEP Now / ACEP Nowcast Podcast (with M. Turner)", date: "11/6/2024", link: "" },
+    ],
+  },
+  {
+    id: "inquiries",
+    kicker: "For journalists & producers",
+    title: "Media Inquiries",
+    items: [
+      {
+        title: "Available for interviews on:",
+        description:
+          "Adolescent substance use trends, opioid use disorder in youth, harm reduction, ED-based interventions, community prevention, and health disparities.",
+        links: [{ label: "Contact for media inquiries", href: "/contact" }],
+      },
+    ],
+  },
+];
+---
+
+<ContentPage
+  kicker="In the news"
+  pageTitle="Media"
+  pageDescription="Press coverage, podcast appearances, and writing on adolescent substance use, harm reduction, and emergency care."
+  sections={sections}
+/>

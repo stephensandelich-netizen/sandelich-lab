@@ -1,0 +1,52 @@
+---
+import ContentPage from "../components/ContentPage.astro";
+
+const sections = [
+  {
+    id: "schools",
+    kicker: "01 / Community & school partnerships",
+    title: "Schools, Youth Organizations & Nonprofits",
+    items: [
+      {
+        title: "Bring us to your community",
+        description:
+          "Substance use literacy, harm reduction and naloxone awareness, stigma reduction, youth mental health support, and customized presentations built around your community's needs.",
+        links: [{ label: "Reach out — we come to you", href: "/contact" }],
+      },
+    ],
+  },
+  {
+    id: "students",
+    kicker: "02 / Student & trainee opportunities",
+    title: "Medical, Public Health & Social Science Students",
+    items: [
+      {
+        title: "Get meaningful research experience",
+        description:
+          "Clinical research projects, data analysis, community-engaged research, manuscript development, and IRB protocol work. We currently mentor over 20 medical students and residents.",
+        links: [{ label: "Apply to join the team", href: "/contact" }],
+      },
+    ],
+  },
+  {
+    id: "research",
+    kicker: "03 / Research collaboration",
+    title: "Clinicians, Investigators & Institutions",
+    items: [
+      {
+        title: "Let's talk about collaboration",
+        description:
+          "Implementation science, ED screening, prevention programs, health services research, and translational research.",
+        links: [{ label: "Start a conversation", href: "/contact" }],
+      },
+    ],
+  },
+];
+---
+
+<ContentPage
+  kicker="Work with us"
+  pageTitle="Get Involved"
+  pageDescription="We work at the intersection of emergency medicine, adolescent health, and community engagement — and we're always glad to hear from schools, students, clinicians, and community partners."
+  sections={sections}
+/>

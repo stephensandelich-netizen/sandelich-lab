@@ -1,0 +1,73 @@
+hero:
+  title: About
+  description: >-
+    Assistant Professor of Emergency Medicine and Pediatrics at Penn State
+    Health, and Associate Director of Outreach for the Penn State Addiction
+    Center for Translation (PSACT).
+
+profile:
+  - label: Current role
+    value: Attending Physician, Pediatric Emergency Medicine
+  - label: Institution
+    value: Penn State Health Milton S. Hershey Medical Center
+  - label: Board certified
+    value: Pediatrics & Pediatric Emergency Medicine
+
+education:
+  - degree: Fellowship, Pediatric Emergency Medicine
+    institution: Nemours/AI duPont Hospital for Children, Wilmington, DE
+    year: 2014–2017
+  - degree: Residency, Pediatrics
+    institution: St. Christopher's Hospital for Children, Philadelphia, PA
+    year: 2011–2014
+  - degree: Doctor of Medicine
+    institution: Drexel University College of Medicine, Philadelphia, PA
+    year: 2007–2011
+  - degree: Bachelor of Science, cum laude
+    institution: Duquesne University, Pittsburgh, PA
+    year: 2003–2007
+
+experience:
+  - role: Assistant Professor; Attending Physician, Pediatric Emergency Medicine
+    organization: Penn State Health Milton S. Hershey Medical Center
+    period: 8/2022–Present
+    bullets:
+      - Provide clinical care in the pediatric emergency department, including direct supervision and teaching of residents and medical students.
+  - role: Associate Director of Outreach
+    organization: Penn State Addiction Center for Translation (PSACT)
+    period: 3/2025–Present
+    bullets:
+      - Coordinate and lead community outreach initiatives focused on substance use prevention, harm reduction, and treatment engagement across central Pennsylvania.
+  - role: Emergency Department Peer Recovery Navigator Program Director
+    organization: Penn State Health Milton S. Hershey Medical Center
+    period: 12/2024–Present
+    bullets:
+      - Lead a multidisciplinary team implementing and evaluating a peer recovery navigator program across general and pediatric emergency departments.
+
+service:
+  - role: Opioid Use Disorder Interest Group Co-Lead
+    organization: Pediatric Emergency Care Applied Research Network (PECARN)
+    period: 3/2024–Present
+  - role: Section Editor, Pediatrics
+    organization: The Western Journal of Emergency Medicine
+    period: 3/2024–Present
+  - role: Subcommittee Chair, Adolescent Substance Use Screening
+    organization: ACEP Pediatric Emergency Medicine National Committee
+    period: 11/2023–Present
+  - role: Research-to-Policy Collaboration Scholar
+    organization: Penn State University
+    period: 11/2023–Present
+
+sections:
+  - title: Mission & Vision
+    items:
+      - title: Mission
+        description: >-
+          Reduce preventable harm by identifying substance use early,
+          responding with evidence-aligned intervention, and strengthening
+          connections between emergency and outpatient care.
+      - title: Vision
+        description: >-
+          A care environment where adolescents receive immediate recognition,
+          developmentally appropriate support, and clear linkage to sustained
+          treatment pathways.

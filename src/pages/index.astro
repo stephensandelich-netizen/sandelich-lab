@@ -1,0 +1,294 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { getFeaturedPapers } from "../lib/papers";
+import siteConfig from "../side.config";
+import { Image } from "astro:assets";
+
+const showHero = siteConfig.homeBlocks.hero.enabled;
+const showPublications = siteConfig.homeBlocks.publications.enabled;
+const showPosts = siteConfig.homeBlocks.posts.enabled;
+
+const recentPosts = showPosts
+  ? (await getCollection("posts"))
+      .filter((post) => !post.data.draft)
+      .sort(
+        (a, b) =>
+          new Date(b.data.publishedAt).getTime() -
+          new Date(a.data.publishedAt).getTime(),
+      )
+      .slice(0, 3)
+  : [];
+
+const selectedPapers = showPublications ? getFeaturedPapers(3) : [];
+const postsSectionNumber = showPublications ? "02" : "01";
+
+const rawProfileImage = siteConfig.hero.profileImage.trim();
+const profileImageUrl = /^https?:/i.test(rawProfileImage)
+  ? rawProfileImage
+  : rawProfileImage.startsWith("/")
+    ? rawProfileImage
+    : new URL(
+        rawProfileImage.startsWith(".")
+          ? rawProfileImage
+          : `../${rawProfileImage}`,
+        import.meta.url,
+      ).href;
+
+const about = {
+  name: siteConfig.author,
+  bio: siteConfig.hero.subheadline,
+  avatar: profileImageUrl,
+  socialLinks: siteConfig.socialLinks,
+};
+
+// Get affiliations and research interests from config
+const affiliations = siteConfig.affiliations || [];
+const researchInterests = siteConfig.researchInterests || [];
+const statusBadge = siteConfig.hero.statusBadge;
+const headline = siteConfig.hero.headline || about.name;
+const profileAlt = siteConfig.hero.profileAlt || about.name;
+---
+
+<Layout
+  title="Home"
+  description={siteConfig.hero.subheadline}
+  schemaType="ProfilePage"
+>
+  <div class="page-stack">
+    {showHero && (
+      <section class="relative border-y border-paper-300/90 py-8 dark:border-ink-700 sm:py-10 lg:py-12">
+      <div class="relative grid gap-8 lg:grid-cols-[minmax(0,1fr)_12rem] lg:items-start lg:gap-12">
+        <div class="min-w-0">
+          <h1 class="max-w-4xl font-heading text-[clamp(2.5rem,5vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-gray-900 dark:text-gray-50">
+            {headline}
+          </h1>
+
+          {affiliations.length > 0 && (
+            <div class="mt-5 border-l-2 border-accent-500 pl-4">
+              <div class="space-y-1">
+                {affiliations.map((aff) => (
+                  <p class="text-base leading-7 text-gray-600 dark:text-gray-300">
+                    {aff.role}
+                    {aff.department && <span>, {aff.department}</span>}
+                    {aff.url ? (
+                      <a
+                        href={aff.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="ml-1 font-semibold text-accent-700 underline decoration-accent-300 underline-offset-4 transition-colors hover:text-accent-900 dark:text-accent-300 dark:decoration-accent-700 dark:hover:text-accent-100"
+                      >
+                        {aff.institution}
+                      </a>
+                    ) : (
+                      <span>, {aff.institution}</span>
+                    )}
+                  </p>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <p class="mt-5 max-w-[43rem] text-[1.0625rem] leading-7 text-gray-700 dark:text-gray-200">
+            {about.bio}
+          </p>
+
+          {researchInterests.length > 0 && (
+            <div class="mt-5 flex flex-wrap gap-x-4 gap-y-2" aria-label="Research interests">
+              {researchInterests.map((interest, index) => (
+                <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.08em] text-gray-600 dark:text-gray-300">
+                  <span class="font-mono text-xs text-accent-600 dark:text-accent-300">{String(index + 1).padStart(2, "0")}</span>
+                  {interest}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div class="mt-6 flex flex-wrap gap-2">
+            {about.socialLinks.slice(0, 5).map((link) => (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="glass-control inline-flex min-h-11 items-center justify-center gap-2 px-3.5 py-2 text-sm font-semibold text-gray-700 no-underline transition-colors duration-150 hover:text-accent-800 dark:text-gray-200 dark:hover:text-accent-200"
+                aria-label={link.label}
+              >
+                <span class={`${link.icon} text-base`} aria-hidden="true" />
+                <span>{link.label}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <aside class="mx-auto w-full max-w-48 lg:mx-0" aria-label="Profile">
+          <div class="relative overflow-hidden rounded-lg border border-paper-300 bg-white/64 p-1.5 dark:border-ink-700 dark:bg-ink-900/68">
+              <Image
+                src={about.avatar}
+                alt={profileAlt}
+                width={siteConfig.hero.profileImageWidth || 160}
+                height={siteConfig.hero.profileImageHeight || 160}
+                layout="constrained"
+                fit="cover"
+                priority
+                class="aspect-square h-auto w-full rounded-md object-cover"
+              />
+          </div>
+          {statusBadge && (
+            <p class="mt-4 flex items-center justify-center gap-2 text-center text-xs font-semibold uppercase tracking-[0.1em] text-emerald-700 dark:text-emerald-300 lg:justify-start">
+              <span class="h-2 w-2 rounded-full bg-emerald-500 ring-4 ring-emerald-100 dark:ring-emerald-900/40" aria-hidden="true"></span>
+              {statusBadge}
+            </p>
+          )}
+        </aside>
+      </div>
+      </section>
+    )}
+
+    {showPublications && (
+      <section class="content-section" aria-labelledby="selected-publications">
+      <div class="mb-4 flex flex-col gap-3 border-b border-gray-300 pb-4 dark:border-gray-700 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="section-kicker">01 / Research</p>
+          <h2 id="selected-publications" class="section-heading">
+            {siteConfig.homeBlocks.publications.title}
+          </h2>
+          {siteConfig.homeBlocks.publications.description && (
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">{siteConfig.homeBlocks.publications.description}</p>
+          )}
+        </div>
+        <a href="/researches" class="action-link glass-control self-start px-3.5 sm:self-auto">
+          Browse all publications
+          <span class="i-ph-arrow-right text-base" aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="divide-y divide-gray-200 border-b border-gray-200 dark:divide-gray-700 dark:border-gray-700">
+        {selectedPapers.map((paper, index) => {
+          const abstractId = `abstract-home-${paper.id}`;
+          const hasAbstract = Boolean(paper.abstract);
+
+          return (
+            <article class="group grid gap-4 py-5 md:grid-cols-[3.5rem_minmax(0,1fr)]">
+			  <p class="entry-index tracking-wider">
+                {String(index + 1).padStart(2, "0")}
+              </p>
+              <div class="min-w-0">
+				<h3 class="entry-title max-w-4xl">
+                  {paper.url ? (
+                    <a
+                      href={paper.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      class="inline text-inherit no-underline transition-colors hover:text-accent-700 dark:hover:text-accent-300"
+                    >
+                      {paper.title}
+                      <span class="i-ph-arrow-up-right ml-1 inline-block text-sm text-accent-600 dark:text-accent-300" aria-hidden="true"></span>
+                    </a>
+                  ) : paper.title}
+                </h3>
+
+                {paper.authors.length > 0 && (
+				  <p class="entry-supporting mt-1.5">
+                    {paper.authors.join(", ")}
+                  </p>
+                )}
+
+				<div class="entry-meta mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+				  {paper.venue && <span class="text-accent-800 dark:text-accent-200">{paper.venue}</span>}
+				  {paper.venue && paper.year && <span class="text-gray-400 dark:text-gray-500" aria-hidden="true">/</span>}
+				  {paper.year && <span class="tabular-nums text-gray-600 dark:text-gray-300">{paper.year}</span>}
+                </div>
+
+                <div class="mt-3 flex flex-wrap items-center gap-2">
+                  {hasAbstract && (
+                    <button
+                      class="glass-control inline-flex min-h-11 cursor-pointer items-center gap-2 px-3.5 py-2 text-sm font-semibold text-gray-700 transition-colors hover:text-accent-800 dark:text-gray-200 dark:hover:text-accent-200"
+                      type="button"
+                      data-abstract-toggle
+                      data-target={abstractId}
+                      aria-controls={abstractId}
+                      aria-expanded="false"
+                    >
+                      <span data-abstract-icon class="i-ph-caret-down text-base transition-transform duration-200" aria-hidden="true"></span>
+                      Abstract
+                    </button>
+                  )}
+                  {paper.url && (
+                    <a href={paper.url} target="_blank" rel="noreferrer" class="action-link glass-control px-3.5">
+                      <span class="i-ph-file-pdf text-lg" aria-hidden="true"></span>
+                      View paper
+                    </a>
+                  )}
+                </div>
+
+                {hasAbstract && (
+                  <div hidden class="body-copy hidden mt-3 rounded-lg border-l-2 border-accent-500 bg-accent-50/70 px-4 py-3 dark:bg-accent-900/20" id={abstractId}>
+                    <p>{paper.abstract}</p>
+                  </div>
+                )}
+              </div>
+            </article>
+          );
+        })}
+      </div>
+      </section>
+    )}
+
+    {showPosts && (
+      <section class="content-section" aria-labelledby="latest-posts">
+      <div class="mb-4 flex flex-col gap-3 border-b border-gray-300 pb-4 dark:border-gray-700 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="section-kicker">{postsSectionNumber} / Notes</p>
+          <h2 id="latest-posts" class="section-heading">{siteConfig.homeBlocks.posts.title}</h2>
+          {siteConfig.homeBlocks.posts.description && (
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">{siteConfig.homeBlocks.posts.description}</p>
+          )}
+        </div>
+        <a href="/posts" class="action-link glass-control self-start px-3.5 sm:self-auto">
+          Visit the archive
+          <span class="i-ph-arrow-right text-base" aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {recentPosts.map((post, index) => (
+          <a href={`/posts/${post.id}`} class="group block h-full no-underline">
+            <article class="surface-card-hover flex h-full flex-col">
+              <div class="mb-5 flex items-center justify-between gap-3">
+                <span class="font-mono text-xs font-semibold text-accent-600 dark:text-accent-300">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <time datetime={post.data.publishedAt.toISOString()} class="font-mono text-xs text-gray-500 dark:text-gray-400">
+                  {post.data.publishedAt.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </time>
+              </div>
+			  <h3 class="entry-title transition-colors group-hover:text-accent-700 dark:group-hover:text-accent-300">
+                {post.data.title}
+              </h3>
+              {post.data.description && (
+				<p class="entry-summary mt-2 line-clamp-3">{post.data.description}</p>
+              )}
+              <span class="mt-auto inline-flex min-h-11 items-center gap-2 pt-4 text-sm font-semibold text-accent-700 dark:text-accent-300">
+                Read note
+                <span class="i-ph-arrow-right transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true"></span>
+              </span>
+            </article>
+          </a>
+        ))}
+      </div>
+      </section>
+    )}
+  </div>
+</Layout>
+
+<script>
+  import { setupAbstractToggles } from "../scripts/ui";
+
+  document.addEventListener("astro:page-load", () => {
+    setupAbstractToggles();
+  });
+</script>

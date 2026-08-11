@@ -1,0 +1,323 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageJumpNav from "../components/PageJumpNav.astro";
+import aboutRaw from "../data/about.yml?raw";
+import { createUniqueSectionId } from "../lib/section-id";
+import siteConfig from "../side.config";
+import { parse } from "yaml";
+
+interface CustomItem {
+  title?: string;
+  subtitle?: string;
+  date?: string;
+  description?: string;
+  link?: string;
+  icon?: string;
+  badges?: string[];
+  highlights?: string[];
+  links?: Array<{ label?: string; href?: string; icon?: string }>;
+}
+
+interface CustomSection {
+  title?: string;
+  icon?: string;
+  items?: (string | CustomItem)[];
+}
+
+interface AboutData {
+  hero?: {
+    title?: string;
+    description?: string;
+  };
+  profile?: Array<{ label?: string; value?: string }>;
+  experience?: Array<{
+    role?: string;
+    organization?: string;
+    period?: string;
+    bullets?: string[];
+  }>;
+  service?: Array<
+    string | { role?: string; organization?: string; period?: string }
+  >;
+  education?: Array<{
+    degree?: string;
+    institution?: string;
+    year?: string | number;
+  }>;
+  sections?: CustomSection[];
+}
+
+const aboutData = (parse(aboutRaw) as AboutData) || {};
+const {
+  hero = {},
+  profile = [],
+  experience = [],
+  service = [],
+  education = [],
+  sections = [],
+} = aboutData;
+
+const pageTitle = siteConfig.pageTitles.about.title || hero.title || "About";
+const pageDescription = siteConfig.pageTitles.about.description || hero.description || "";
+
+const fixedSectionIds = new Set(["profile", "education", "experience", "service"]);
+const usedSectionIds = new Set(fixedSectionIds);
+
+const customSections = sections.map((section, index) => ({
+  ...section,
+  id: createUniqueSectionId(section.title, usedSectionIds, `section-${index + 1}`),
+  label: section.title?.trim() || `Section ${index + 1}`,
+}));
+
+const aboutNavItems = [
+  ...(profile.length > 0 ? [{ href: "#profile", label: "Profile" }] : []),
+  ...(education.length > 0 ? [{ href: "#education", label: "Education" }] : []),
+  ...(experience.length > 0 ? [{ href: "#experience", label: "Experience" }] : []),
+  ...(service.length > 0 ? [{ href: "#service", label: "Service" }] : []),
+  ...customSections.map((section) => ({
+    href: `#${section.id}`,
+    label: section.label,
+  })),
+];
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  schemaType="AboutPage"
+>
+  <div class="page-stack">
+    <header class="page-header">
+      <p class="page-kicker">Academic profile</p>
+      <h1 class="page-title">{pageTitle}</h1>
+      <p class="page-description">{pageDescription}</p>
+    </header>
+
+    <PageJumpNav items={aboutNavItems} />
+
+    <div class="space-y-7 sm:space-y-8">
+      <!-- Profile Section -->
+      {
+        profile.length > 0 && (
+          <section id="profile" class="content-section scroll-mt-20 space-y-4">
+            <header class="border-b border-gray-200 pb-3 dark:border-gray-700">
+              <p class="section-kicker">At a glance</p>
+              <h2 class="section-heading">Profile</h2>
+            </header>
+            <div class="grid gap-3 md:grid-cols-3">
+              {profile.map((item) => (
+                <div class="surface-card">
+                  <p class="section-kicker">{item.label}</p>
+                  <p class="entry-title mt-2 text-[1.125rem]">
+                    {item.value}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      <!-- Education Section -->
+      {
+        education.length > 0 && (
+          <section id="education" class="content-section scroll-mt-20 space-y-4">
+            <header class="border-b border-gray-200 pb-3 dark:border-gray-700">
+              <p class="section-kicker">Formal training</p>
+              <h2 class="section-heading">Education</h2>
+            </header>
+            <div class="divide-y divide-gray-200 border-y border-gray-200 dark:divide-gray-700 dark:border-gray-700">
+              {education.map((edu) => (
+                <article class="grid gap-2 py-4 md:grid-cols-[9rem_minmax(0,1fr)] md:gap-6">
+				  <p class="entry-index">
+                    {edu.year}
+                  </p>
+                  <div class="space-y-1">
+					<h3 class="entry-title">
+                      {edu.degree}
+                    </h3>
+					<p class="entry-supporting">
+                      {edu.institution}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      <!-- Experience Section -->
+      {
+        experience.length > 0 && (
+          <section id="experience" class="content-section scroll-mt-20 space-y-4">
+            <header class="border-b border-gray-200 pb-3 dark:border-gray-700">
+              <p class="section-kicker">Appointments</p>
+              <h2 class="section-heading">Experience</h2>
+            </header>
+            <div class="divide-y divide-gray-200 border-y border-gray-200 dark:divide-gray-700 dark:border-gray-700">
+              {experience.map((exp) => (
+                <article class="grid gap-3 py-5 md:grid-cols-[9rem_minmax(0,1fr)] md:gap-6">
+				  <p class="entry-index">
+                    {exp.period}
+                  </p>
+                  <div class="space-y-3">
+                    <div class="space-y-1">
+					  <h3 class="entry-title">
+                        {exp.role}
+                      </h3>
+					  <p class="entry-supporting font-semibold">
+                        {exp.organization}
+                      </p>
+                    </div>
+
+                    <ul class="list-disc space-y-2 pl-5 marker:text-accent-500 dark:marker:text-accent-400">
+                      {(exp.bullets || []).map((bullet) => (
+                        <li class="body-copy pl-1">
+                          {bullet}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      <!-- Service Section -->
+      {
+        service.length > 0 && (
+          <section id="service" class="content-section scroll-mt-20 space-y-4">
+            <header class="border-b border-gray-200 pb-3 dark:border-gray-700">
+              <p class="section-kicker">Community contributions</p>
+              <h2 class="section-heading">Academic Service</h2>
+            </header>
+            <div class="grid gap-3 md:grid-cols-2">
+              {service.map((item) => {
+                if (typeof item === "string") {
+                  return (
+                    <article class="surface-card h-full">
+                      <p class="section-kicker">Service</p>
+                      <p class="body-copy mt-2">{item}</p>
+                    </article>
+                  );
+                }
+                return (
+                  <article class="surface-card h-full space-y-2">
+                    <p class="section-kicker">{item.period}</p>
+                    <div class="space-y-1">
+                      <h3 class="font-heading text-lg font-semibold text-gray-950 dark:text-gray-50">
+                        {item.role}
+                      </h3>
+                      <p class="body-copy">
+                        {item.organization}
+                      </p>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        )
+      }
+
+      <!-- Custom Sections (Awards, etc.) -->
+      {
+        customSections.map((section) => (
+          <section id={section.id} class="content-section scroll-mt-20 space-y-4">
+            <header class="border-b border-gray-200 pb-3 dark:border-gray-700">
+              <p class="section-kicker">Additional record</p>
+              <h2 class="section-heading flex items-center gap-2">
+                {section.icon && (
+                  <span class={`${section.icon} text-accent-600 dark:text-accent-300`} aria-hidden="true"></span>
+                )}
+                <span>{section.title}</span>
+              </h2>
+            </header>
+            <div class="space-y-3">
+              {(section.items || []).map((item) => {
+                if (typeof item === "string") {
+                  return (
+                    <article class="surface-card">
+                      <p class="body-copy">{item}</p>
+                    </article>
+                  );
+                }
+                return (
+                  <article class="surface-card-hover group grid gap-4 md:grid-cols-[minmax(0,1fr)_auto]">
+                    <div class="min-w-0 space-y-3">
+                      <div class="space-y-1">
+                        {item.title && (
+                          <h3 class="entry-title">
+                            {item.link ? (
+                              <a
+                                href={item.link}
+                                target="_blank"
+                                rel="noreferrer"
+                                class="inline text-inherit no-underline transition-colors hover:text-accent-700 focus-visible:text-accent-700 dark:hover:text-accent-300 dark:focus-visible:text-accent-300"
+                              >
+                                <span>{item.title}</span>
+                                <span class="i-mdi:open-in-new ml-1 inline-block align-[0.05em] text-xs" aria-hidden="true"></span>
+                              </a>
+                            ) : item.title}
+                          </h3>
+                        )}
+                        {item.subtitle && (
+                          <p class="entry-meta font-semibold text-accent-700 dark:text-accent-300">{item.subtitle}</p>
+                        )}
+                        {item.description && (
+                          <p class="entry-summary">{item.description}</p>
+                        )}
+                      </div>
+
+                      {item.badges && item.badges.length > 0 && (
+                          <div class="flex flex-wrap gap-2">
+                            {item.badges.map((badge) => (
+                              <span class="meta-chip">{badge}</span>
+                            ))}
+                          </div>
+                      )}
+                      {item.highlights && item.highlights.length > 0 && (
+                          <ul class="space-y-2 border-l-2 border-accent-200 pl-4 dark:border-accent-800">
+                            {item.highlights.map((highlight) => (
+                              <li class="body-copy">
+                                {highlight}
+                              </li>
+                            ))}
+                          </ul>
+                      )}
+                      {item.links && item.links.length > 0 && (
+                          <div class="flex flex-wrap gap-2">
+                            {item.links.map((link) => (
+                              link.href && (
+                                <a
+                                  href={link.href}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  class="action-link min-h-11"
+                                >
+                                  <span class={link.icon ?? "i-mdi:open-in-new"} aria-hidden="true"></span>
+                                  {link.label ?? "Read more"}
+                                </a>
+                              )
+                            ))}
+                          </div>
+                      )}
+                    </div>
+                    {item.date && (
+                      <p class="entry-meta tabular-nums">
+                        {item.date}
+                      </p>
+                    )}
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</Layout>
