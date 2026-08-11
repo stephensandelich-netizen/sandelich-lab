@@ -1,7 +1,7 @@
 ---
 title: "The ED Catches Teens at the Worst Moment"
 description: "Screening catches almost every teen with a substance problem. Referral catches almost none. Here's the data behind that gap."
-publishedAt: 2026-08-18
+publishedAt: 2026-08-11
 tags: ["screening", "adolescent substance use", "emergency medicine"]
 sticky: false
 draft: false
